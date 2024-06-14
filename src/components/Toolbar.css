@@ -1,0 +1,36 @@
+/* Improved CSS for the toolbar */
+#toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  align-items: center;
+  background-color: white;
+  border-top: 1px solid black;
+  z-index: 100;
+  padding-left: calc(50% - (40px * 9));
+  padding-right: calc(50% - (40px * 9));
+}
+
+.toolbarImage {
+  width: 40px;
+  margin: 0 auto; /* Center the images horizontally */
+  justify-self: center; /* Align images to the center of the grid cell */
+}
+
+/* Media query for responsiveness */
+@media screen and (max-width: 768px) {
+  #toolbar {
+    height: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12px;
+  }
+
+  .toolbarImage {
+    width: 35px;
+  }
+}

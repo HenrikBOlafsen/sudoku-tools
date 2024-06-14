@@ -1,0 +1,105 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  user-select: none;
+}
+
+html, body { height: 100%; overflow: hidden;}
+
+#pageWrapper {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 20% 1fr 20%;
+
+  /*height: 88%;*/
+}
+
+.settings-panel {
+  padding-left: 7px;
+  border: solid black 1px;
+  background-color: white;
+  z-index: 1;
+}
+
+.settings-panel button {
+  margin-bottom: 10px;
+  max-width: 90%;
+}
+
+#innerTopParent {
+  padding-top: 10px;
+  margin: 0 auto;
+}
+
+#sudokuInfoPanel {
+  border: solid black 1px;
+  background-color: white;
+  z-index: 1;
+}
+
+#sudokuInfoPanel * {
+  user-select: text;
+}
+
+
+#sudokuParent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(243, 243, 243);
+  padding: 0;
+  margin: 0;
+  /*outline: 2px solid black;*/
+  outline: 2px solid black;
+  box-shadow: 5px 10px 10px #888888;
+  transform-origin: 0% 0%;
+}
+
+.gridSquare {
+  /*background-color: green;*/
+  padding: 0;
+  margin: 0;
+  border: solid black 1px;
+  /*outline: 5px solid black;*/
+  text-align: center;
+  font-size: 27px;
+  /*transition: 1s;*/
+}
+
+.sudokuRow {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+
+#sudokuCreationPanel {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  margin: 0;
+  outline: 1.8px solid black;
+  background-color: white;
+  z-index: 1;
+}
+
+
+/* to make the up and down arrows of number fields dissapear*/
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
