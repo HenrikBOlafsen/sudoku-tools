@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/sudoku-tools/", // Ensure this matches your repository name
+  base: "/sudoku-tools/",
   plugins: [react()],
   build: {
     outDir: "dist",
