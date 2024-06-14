@@ -98,7 +98,7 @@ const SudokuSquare = ({
     }
   };
 
-  const handleOnMouseLeave = (e: React.MouseEvent) => {
+  const handleOnMouseLeave = () => {
     handleHoverChange(squareId, "none");
   };
 
