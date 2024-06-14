@@ -1,5 +1,6 @@
 import SudokuSquare from "./SudokuSquare";
 import { Color } from "react-color";
+import { HighlightDirection } from "../App";
 
 interface Props {
   rowId: number;
@@ -12,12 +13,9 @@ interface Props {
   sudokuColors: Array<Color>;
   squareHandleHoverChange: (
     squareId: number,
-    direction: "none" | "horizontal" | "vertical"
+    direction: HighlightDirection
   ) => void;
-  squareHandleClick: (
-    squareId: number,
-    direction: "none" | "horizontal" | "vertical"
-  ) => void;
+  squareHandleClick: (squareId: number, direction: HighlightDirection) => void;
   squaresTextStyle: object;
 }
 

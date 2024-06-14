@@ -1,4 +1,5 @@
 import { Color } from "react-color";
+import { HighlightDirection } from "../App";
 
 interface Props {
   squareId: number;
@@ -7,14 +8,8 @@ interface Props {
   boxWidth: number;
   boxHeight: number;
   boxWidthHeightPx: number;
-  handleHoverChange: (
-    squareId: number,
-    direction: "none" | "horizontal" | "vertical"
-  ) => void;
-  handleClick: (
-    squareId: number,
-    direction: "none" | "horizontal" | "vertical"
-  ) => void;
+  handleHoverChange: (squareId: number, direction: HighlightDirection) => void;
+  handleClick: (squareId: number, direction: HighlightDirection) => void;
   textStyle: object;
 }
 
@@ -92,14 +87,14 @@ const SudokuSquare = ({
       e.pageY - (currentTargetRect.top + currentTargetRect.bottom) / 2;
 
     if (Math.abs(event_offsetX) > Math.abs(event_offsetY)) {
-      handleHoverChange(squareId, "horizontal");
+      handleHoverChange(squareId, HighlightDirection.HORIZONTAL);
     } else {
-      handleHoverChange(squareId, "vertical");
+      handleHoverChange(squareId, HighlightDirection.VERTICAL);
     }
   };
 
   const handleOnMouseLeave = () => {
-    handleHoverChange(squareId, "none");
+    handleHoverChange(squareId, HighlightDirection.NONE);
   };
 
   const handleClickHelper = (e: React.MouseEvent) => {
@@ -110,9 +105,9 @@ const SudokuSquare = ({
       e.pageY - (currentTargetRect.top + currentTargetRect.bottom) / 2;
 
     if (Math.abs(event_offsetX) > Math.abs(event_offsetY)) {
-      handleClick(squareId, "horizontal");
+      handleClick(squareId, HighlightDirection.HORIZONTAL);
     } else {
-      handleClick(squareId, "vertical");
+      handleClick(squareId, HighlightDirection.VERTICAL);
     }
   };
 

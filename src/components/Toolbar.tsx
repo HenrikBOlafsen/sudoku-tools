@@ -7,10 +7,10 @@ import mirrorSudokuImage from "../assets/toolsImages/mirrorSudokuImage.png";
 import numberSwitchImage from "../assets/toolsImages/numberSwitchImage.png";
 import partialNumberSwitchImage from "../assets/toolsImages/partialNumberSwitchImage.png";
 import rotateSudokuClockwiseImage from "../assets/toolsImages/rotateSudokuClockwiseImage.png";
-import { selectableTools } from "../App";
+import { SelectableTools } from "../App";
 
 interface Props {
-  selectedTool: selectableTools;
+  selectedTool: SelectableTools;
   toolRowColumnSwitch: () => void;
   toolBoxRowColumnSwitch: () => void;
   toolMirrorBoxRowColumn: () => void;
@@ -40,21 +40,21 @@ const Toolbar = ({
         alt="row/column switch button"
         src={rowColumnSwitchImage}
         onClick={toolRowColumnSwitch}
-        selected={selectedTool === selectableTools.ROW_COLUMN_SWITCH}
+        selected={selectedTool === SelectableTools.ROW_COLUMN_SWITCH}
       />
 
       <ToolbarElement
         alt="box row/column switch button"
         src={boxRowColumnSwitchImage}
         onClick={toolBoxRowColumnSwitch}
-        selected={selectedTool === selectableTools.BOX_ROW_COLUMN_SWITCH}
+        selected={selectedTool === SelectableTools.BOX_ROW_COLUMN_SWITCH}
       />
 
       <ToolbarElement
         alt="mirror box row/column button"
         src={mirrorBoxRowColumnImage}
         onClick={toolMirrorBoxRowColumn}
-        selected={selectedTool === selectableTools.MIRROR_BOX_ROW_COLUMN}
+        selected={selectedTool === SelectableTools.MIRROR_BOX_ROW_COLUMN}
       />
 
       <ToolbarElement
@@ -76,14 +76,14 @@ const Toolbar = ({
         alt="number switch button"
         src={numberSwitchImage}
         onClick={toolNumberSwitch}
-        selected={selectedTool === selectableTools.NUMBER_SWITCH}
+        selected={selectedTool === SelectableTools.NUMBER_SWITCH}
       />
 
       <ToolbarElement
         alt="partial number switch button"
         src={partialNumberSwitchImage}
         onClick={toolPartialNumberSwitch}
-        selected={selectedTool === selectableTools.PARTIAL_NUMBER_SWITCH}
+        selected={selectedTool === SelectableTools.PARTIAL_NUMBER_SWITCH}
       />
 
       <ToolbarElement

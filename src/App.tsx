@@ -25,13 +25,19 @@ import {
 import SudokuColorPicker from "./components/SudokuColorPicker";
 import { Color } from "react-color";
 
-const enum highlightModes {
+const enum HighlightModes {
   SQUARE = "square",
   LINE = "line",
   BOX_LINE = "boxLine",
 }
 
-export const enum selectableTools {
+export const enum HighlightDirection {
+  NONE = "none",
+  HORIZONTAL = "horizontal",
+  VERTICAL = "vertical",
+}
+
+export const enum SelectableTools {
   ROW_COLUMN_SWITCH = "rowColumnSwitch",
   BOX_ROW_COLUMN_SWITCH = "boxRowColumnSwitch",
   MIRROR_BOX_ROW_COLUMN = "mirrorBoxRowColumn",
@@ -69,13 +75,12 @@ function App() {
   );
 
   const [selectedTool, setSelectedTool] = useState(
-    selectableTools.ROW_COLUMN_SWITCH
+    SelectableTools.ROW_COLUMN_SWITCH
   );
-  const [highlightMode, setHighlightMode] = useState(highlightModes.LINE);
+  const [highlightMode, setHighlightMode] = useState(HighlightModes.LINE);
   const [highlightType, setHighlightType] = useState(1);
-  const [highlightDirectionLock, setHighlightDirectionLock] = useState<
-    "none" | "horizontal" | "vertical"
-  >("none");
+  const [highlightDirectionLock, setHighlightDirectionLock] =
+    useState<HighlightDirection>(HighlightDirection.NONE);
 
   const defaultSudokuColors = new Array(36).fill("#fff");
   const [sudokuColors, setSudokuColors] =
@@ -135,12 +140,12 @@ function App() {
     );
     setSelectedSquares(clearSudokuHighlight(sudokuBoxWidth * sudokuBoxHeight));
     setHighlightType(1);
-    setHighlightDirectionLock("none");
+    setHighlightDirectionLock(HighlightDirection.NONE);
   }
 
   function handleSudokuSquareHighlighting(
     squareId: number,
-    direction: "none" | "horizontal" | "vertical",
+    direction: HighlightDirection,
     clickRegistered: boolean
   ) {
     let newSudokuHighlight: Array<Array<number>> = clearSudokuHighlight(
@@ -148,10 +153,12 @@ function App() {
     );
 
     const actualHighlightDirection =
-      highlightDirectionLock != "none" ? highlightDirectionLock : direction;
+      highlightDirectionLock != HighlightDirection.NONE
+        ? highlightDirectionLock
+        : direction;
 
-    if (highlightMode == highlightModes.SQUARE) {
-      if (actualHighlightDirection !== "none") {
+    if (highlightMode == HighlightModes.SQUARE) {
+      if (actualHighlightDirection !== HighlightDirection.NONE) {
         newSudokuHighlight = highlightSudokuSquare(
           highlightedSquares,
           Math.floor(squareId / (sudokuBoxWidth * sudokuBoxHeight)),
@@ -159,22 +166,22 @@ function App() {
           highlightType
         );
       }
-    } else if (highlightMode == highlightModes.LINE) {
-      if (actualHighlightDirection === "horizontal") {
+    } else if (highlightMode == HighlightModes.LINE) {
+      if (actualHighlightDirection === HighlightDirection.HORIZONTAL) {
         newSudokuHighlight = highlightSudokuRow(
           highlightedSquares,
           Math.floor(squareId / (sudokuBoxWidth * sudokuBoxHeight)),
           highlightType
         );
-      } else if (actualHighlightDirection === "vertical") {
+      } else if (actualHighlightDirection === HighlightDirection.VERTICAL) {
         newSudokuHighlight = highlightSudokuColumn(
           highlightedSquares,
           Math.floor(squareId % (sudokuBoxWidth * sudokuBoxHeight)),
           highlightType
         );
       }
-    } else if (highlightMode == highlightModes.BOX_LINE) {
-      if (actualHighlightDirection === "horizontal") {
+    } else if (highlightMode == HighlightModes.BOX_LINE) {
+      if (actualHighlightDirection === HighlightDirection.HORIZONTAL) {
         newSudokuHighlight = highlightSudokuBoxRow(
           highlightedSquares,
           Math.floor(
@@ -184,7 +191,7 @@ function App() {
           sudokuBoxHeight,
           highlightType
         );
-      } else if (actualHighlightDirection === "vertical") {
+      } else if (actualHighlightDirection === HighlightDirection.VERTICAL) {
         newSudokuHighlight = highlightSudokuBoxColumn(
           highlightedSquares,
           Math.floor(
@@ -275,8 +282,8 @@ function App() {
             handleSudokuSquareHighlighting(squareId, direction, true);
             if (highlightType == 1) {
               setHighlightDirectionLock(direction);
-            } else if (highlightDirectionLock !== "none") {
-              setHighlightDirectionLock("none");
+            } else if (highlightDirectionLock !== HighlightDirection.NONE) {
+              setHighlightDirectionLock(HighlightDirection.NONE);
             }
             setHighlightType((highlightType % 2) + 1);
           }}
@@ -332,16 +339,16 @@ function App() {
       <Toolbar
         selectedTool={selectedTool}
         toolRowColumnSwitch={() => {
-          setSelectedTool(selectableTools.ROW_COLUMN_SWITCH);
-          setHighlightMode(highlightModes.LINE);
+          setSelectedTool(SelectableTools.ROW_COLUMN_SWITCH);
+          setHighlightMode(HighlightModes.LINE);
         }}
         toolBoxRowColumnSwitch={() => {
-          setSelectedTool(selectableTools.BOX_ROW_COLUMN_SWITCH);
-          setHighlightMode(highlightModes.BOX_LINE);
+          setSelectedTool(SelectableTools.BOX_ROW_COLUMN_SWITCH);
+          setHighlightMode(HighlightModes.BOX_LINE);
         }}
         toolMirrorBoxRowColumn={() => {
-          setSelectedTool(selectableTools.MIRROR_BOX_ROW_COLUMN);
-          setHighlightMode(highlightModes.BOX_LINE);
+          setSelectedTool(SelectableTools.MIRROR_BOX_ROW_COLUMN);
+          setHighlightMode(HighlightModes.BOX_LINE);
         }}
         toolMirrorSudokuHorizontally={() => {
           setSudokuValues(mirrorSudokuHorizontally(sudokuValues));
@@ -352,12 +359,12 @@ function App() {
           clearSudokuSelection();
         }}
         toolNumberSwitch={() => {
-          setSelectedTool(selectableTools.NUMBER_SWITCH);
-          setHighlightMode(highlightModes.SQUARE);
+          setSelectedTool(SelectableTools.NUMBER_SWITCH);
+          setHighlightMode(HighlightModes.SQUARE);
         }}
         toolPartialNumberSwitch={() => {
-          setSelectedTool(selectableTools.PARTIAL_NUMBER_SWITCH);
-          setHighlightMode(highlightModes.SQUARE);
+          setSelectedTool(SelectableTools.PARTIAL_NUMBER_SWITCH);
+          setHighlightMode(HighlightModes.SQUARE);
         }}
         toolRotateClockwise={() => {
           if (sudokuAnimationOngoing) return;
