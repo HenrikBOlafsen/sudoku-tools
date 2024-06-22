@@ -341,14 +341,17 @@ function App() {
         toolRowColumnSwitch={() => {
           setSelectedTool(SelectableTools.ROW_COLUMN_SWITCH);
           setHighlightMode(HighlightModes.LINE);
+          clearSudokuSelection();
         }}
         toolBoxRowColumnSwitch={() => {
           setSelectedTool(SelectableTools.BOX_ROW_COLUMN_SWITCH);
           setHighlightMode(HighlightModes.BOX_LINE);
+          clearSudokuSelection();
         }}
         toolMirrorBoxRowColumn={() => {
           setSelectedTool(SelectableTools.MIRROR_BOX_ROW_COLUMN);
           setHighlightMode(HighlightModes.BOX_LINE);
+          clearSudokuSelection();
         }}
         toolMirrorSudokuHorizontally={() => {
           setSudokuValues(mirrorSudokuHorizontally(sudokuValues));
@@ -361,10 +364,12 @@ function App() {
         toolNumberSwitch={() => {
           setSelectedTool(SelectableTools.NUMBER_SWITCH);
           setHighlightMode(HighlightModes.SQUARE);
+          clearSudokuSelection();
         }}
         toolPartialNumberSwitch={() => {
           setSelectedTool(SelectableTools.PARTIAL_NUMBER_SWITCH);
           setHighlightMode(HighlightModes.SQUARE);
+          clearSudokuSelection();
         }}
         toolRotateClockwise={() => {
           if (sudokuAnimationOngoing) return;
