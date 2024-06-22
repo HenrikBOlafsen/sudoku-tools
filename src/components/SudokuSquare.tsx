@@ -1,5 +1,6 @@
 import { Color } from "react-color";
 import { HighlightDirection } from "../App";
+import { useState } from "react";
 
 interface Props {
   squareId: number;
@@ -24,6 +25,9 @@ const SudokuSquare = ({
   handleClick,
   textStyle,
 }: Props) => {
+  const clickIsDragTreshold = 3;
+  const [cursorPosOnMouseDown, setCursorPosOnMouseDown] = useState([0, 0]);
+
   const squareStyle: React.CSSProperties = {
     width: boxWidthHeightPx,
     height: boxWidthHeightPx,
@@ -98,6 +102,12 @@ const SudokuSquare = ({
   };
 
   const handleClickHelper = (e: React.MouseEvent) => {
+    if (
+      Math.abs(cursorPosOnMouseDown[0] - e.clientX) > clickIsDragTreshold ||
+      Math.abs(cursorPosOnMouseDown[1] - e.clientY) > clickIsDragTreshold
+    )
+      return;
+
     let currentTargetRect = e.currentTarget.getBoundingClientRect();
     const event_offsetX =
       e.pageX - (currentTargetRect.left + currentTargetRect.right) / 2;
@@ -111,6 +121,10 @@ const SudokuSquare = ({
     }
   };
 
+  const handleOnMouseDown = (e: React.MouseEvent) => {
+    setCursorPosOnMouseDown([e.clientX, e.clientY]);
+  };
+
   return (
     <div
       className="gridSquare"
@@ -118,6 +132,7 @@ const SudokuSquare = ({
       onMouseMove={handleOnMouseMove}
       onMouseLeave={handleOnMouseLeave}
       onClick={handleClickHelper}
+      onMouseDown={handleOnMouseDown}
     >
       <p
         style={{
