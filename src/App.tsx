@@ -23,12 +23,19 @@ import {
 import SudokuColorPicker from "./components/SudokuColorPicker";
 import { Color } from "react-color";
 
-export const enum SelectableTools {
+export enum SelectableTools {
   ROW_COLUMN_SWITCH = "rowColumnSwitch",
   BOX_ROW_COLUMN_SWITCH = "boxRowColumnSwitch",
   MIRROR_BOX_ROW_COLUMN = "mirrorBoxRowColumn",
   NUMBER_SWITCH = "numberSwitch",
   PARTIAL_NUMBER_SWITCH = "partialNumberSwitch",
+}
+
+export const enum InstantTools {
+  MIRROR_SUDOKU_HORIZONTALLY = "mirrorSudokuHorizontally",
+  MIRROR_SUDOKU_VERTICALLY = "mirrorSudokuVertically",
+  ROTATE_CLOCKWISE = "rotateClockwise",
+  ROTATE_COUNTERCLOCKWISE = "rotateCounterclockwise",
 }
 
 function App() {
@@ -208,6 +215,48 @@ function App() {
     setRecenterSudokuDirtyHack(recenterSudokuDirtyHack + 1);
   }
 
+  const selectableToolsValues = Object.values(SelectableTools);
+  function isSelectableTool(tool: any): tool is SelectableTools {
+    return selectableToolsValues.includes(tool);
+  }
+
+  function onToolSelected(tool: SelectableTools | InstantTools) {
+    if (isSelectableTool(tool)) {
+      setSelectedTool(tool);
+    } else {
+      switch (tool) {
+        case InstantTools.MIRROR_SUDOKU_HORIZONTALLY:
+          setSudokuValues(mirrorSudokuHorizontally(sudokuValues));
+          break;
+        case InstantTools.MIRROR_SUDOKU_VERTICALLY:
+          setSudokuValues(mirrorSudokuVertically(sudokuValues));
+          break;
+        case InstantTools.ROTATE_CLOCKWISE:
+          if (sudokuAnimationOngoing) return;
+          setAnimationRotateClockwiseOngoing(true);
+          setTimeout(() => {
+            const prevSudokuBoxWidth = sudokuBoxWidth;
+            setSudokuBoxWidth(sudokuBoxHeight);
+            setSudokuBoxHeight(prevSudokuBoxWidth);
+            setSudokuValues(rotateSudokuClockwise(sudokuValues));
+            setAnimationRotateClockwiseOngoing(false);
+          }, rotateTransitionDuration * 1000);
+          break;
+        case InstantTools.ROTATE_COUNTERCLOCKWISE:
+          if (sudokuAnimationOngoing) return;
+          setAnimationRotateCounterclockwiseOngoing(true);
+          setTimeout(() => {
+            const prevSudokuBoxWidth = sudokuBoxWidth;
+            setSudokuBoxWidth(sudokuBoxHeight);
+            setSudokuBoxHeight(prevSudokuBoxWidth);
+            setSudokuValues(rotateSudokuCounterclockwise(sudokuValues));
+            setAnimationRotateCounterclockwiseOngoing(false);
+          }, rotateTransitionDuration * 1000);
+      }
+      clearSudokuSelection();
+    }
+  }
+
   return (
     <div id="pageWrapper">
       {sudokuCreationPanelVisible && (
@@ -293,53 +342,7 @@ function App() {
 
       <Toolbar
         selectedTool={selectedTool}
-        toolRowColumnSwitch={() => {
-          setSelectedTool(SelectableTools.ROW_COLUMN_SWITCH);
-        }}
-        toolBoxRowColumnSwitch={() => {
-          setSelectedTool(SelectableTools.BOX_ROW_COLUMN_SWITCH);
-        }}
-        toolMirrorBoxRowColumn={() => {
-          setSelectedTool(SelectableTools.MIRROR_BOX_ROW_COLUMN);
-        }}
-        toolMirrorSudokuHorizontally={() => {
-          setSudokuValues(mirrorSudokuHorizontally(sudokuValues));
-          clearSudokuSelection();
-        }}
-        toolMirrorSudokuVertically={() => {
-          setSudokuValues(mirrorSudokuVertically(sudokuValues));
-          clearSudokuSelection();
-        }}
-        toolNumberSwitch={() => {
-          setSelectedTool(SelectableTools.NUMBER_SWITCH);
-        }}
-        toolPartialNumberSwitch={() => {
-          setSelectedTool(SelectableTools.PARTIAL_NUMBER_SWITCH);
-        }}
-        toolRotateClockwise={() => {
-          if (sudokuAnimationOngoing) return;
-          setAnimationRotateClockwiseOngoing(true);
-          setTimeout(() => {
-            const prevSudokuBoxWidth = sudokuBoxWidth;
-            setSudokuBoxWidth(sudokuBoxHeight);
-            setSudokuBoxHeight(prevSudokuBoxWidth);
-            setSudokuValues(rotateSudokuClockwise(sudokuValues));
-            setAnimationRotateClockwiseOngoing(false);
-          }, rotateTransitionDuration * 1000);
-          clearSudokuSelection();
-        }}
-        toolRotateCounterclockwise={() => {
-          if (sudokuAnimationOngoing) return;
-          setAnimationRotateCounterclockwiseOngoing(true);
-          setTimeout(() => {
-            const prevSudokuBoxWidth = sudokuBoxWidth;
-            setSudokuBoxWidth(sudokuBoxHeight);
-            setSudokuBoxHeight(prevSudokuBoxWidth);
-            setSudokuValues(rotateSudokuCounterclockwise(sudokuValues));
-            setAnimationRotateCounterclockwiseOngoing(false);
-          }, rotateTransitionDuration * 1000);
-          clearSudokuSelection();
-        }}
+        toolSelect={onToolSelected}
       ></Toolbar>
     </div>
   );
