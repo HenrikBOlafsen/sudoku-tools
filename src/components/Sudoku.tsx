@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Color } from "react-color";
 import SudokuRow from "./SudokuRow";
-import { HighlightDirection } from "../App";
+import { HighlightDirection } from "../util/sudokuHighlightingUtils";
 
 interface Props {
   boxWidth: number;

@@ -1,6 +1,6 @@
 import { Color } from "react-color";
-import { HighlightDirection } from "../App";
 import { useState } from "react";
+import { HighlightDirection } from "../util/sudokuHighlightingUtils";
 
 interface Props {
   squareId: number;

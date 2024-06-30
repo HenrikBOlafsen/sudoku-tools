@@ -1,6 +1,6 @@
 import SudokuSquare from "./SudokuSquare";
 import { Color } from "react-color";
-import { HighlightDirection } from "../App";
+import { HighlightDirection } from "../util/sudokuHighlightingUtils";
 
 interface Props {
   rowId: number;
