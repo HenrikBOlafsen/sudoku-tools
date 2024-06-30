@@ -7,7 +7,7 @@ import mirrorSudokuImage from "../assets/toolsImages/mirrorSudokuImage.png";
 import numberSwitchImage from "../assets/toolsImages/numberSwitchImage.png";
 import partialNumberSwitchImage from "../assets/toolsImages/partialNumberSwitchImage.png";
 import rotateSudokuClockwiseImage from "../assets/toolsImages/rotateSudokuClockwiseImage.png";
-import { InstantTools, SelectableTools } from "../App";
+import { InstantTools, SelectableTools } from "../util/useSudoku";
 
 interface Props {
   selectedTool: SelectableTools;
