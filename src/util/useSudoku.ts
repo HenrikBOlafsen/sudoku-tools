@@ -33,6 +33,18 @@ export const enum InstantTools {
   ROTATE_COUNTERCLOCKWISE = "rotateCounterclockwise",
 }
 
+export interface SudokuProperties {
+  sudokuBoxWidth: number;
+  sudokuBoxHeight: number;
+  sudokuValues: number[][];
+  highlightedSquares: number[][];
+  selectedSquares: number[][];
+  sudokuColors: Array<Color>;
+  sudokuColorsEnabled: boolean;
+  sudokuStyle: React.CSSProperties;
+  sudokuSquaresTextStyle: React.CSSProperties;
+}
+
 export function useSudoku() {
   const [sudokuBoxWidth, setSudokuBoxWidth] = useState(3);
   const [sudokuBoxHeight, setSudokuBoxHeight] = useState(3);
@@ -246,21 +258,25 @@ export function useSudoku() {
     }
   }
 
+  const sudokuProperties: SudokuProperties = {
+    sudokuBoxWidth: sudokuBoxWidth,
+    sudokuBoxHeight: sudokuBoxHeight,
+    sudokuValues: sudokuValues,
+    highlightedSquares: highlightedSquares,
+    selectedSquares: selectedSquares,
+    sudokuColors: sudokuColors,
+    sudokuColorsEnabled: sudokuColorsEnabled,
+    sudokuStyle: sudokuStyle,
+    sudokuSquaresTextStyle: sudokuSquaresTextStyle,
+  };
+
   return {
-    sudokuBoxWidth,
-    sudokuBoxHeight,
-    sudokuValues,
-    highlightedSquares,
-    selectedSquares,
+    sudokuProperties,
     selectedTool,
     highlightType,
     highlightDirectionLock,
-    sudokuColors,
-    sudokuColorsEnabled,
     recenterSudokuDirtyHack,
     animationSpeed,
-    sudokuStyle,
-    sudokuSquaresTextStyle,
     handleSudokuSquareHighlighting,
     handleSudokuCreation,
     onToolSelected,

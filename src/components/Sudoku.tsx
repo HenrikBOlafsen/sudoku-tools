@@ -1,35 +1,21 @@
 import { useEffect, useState } from "react";
-import { Color } from "react-color";
 import SudokuRow from "./SudokuRow";
 import { HighlightDirection } from "../util/sudokuHighlightingUtils";
+import { SudokuProperties } from "../util/useSudoku";
 
 interface Props {
-  boxWidth: number;
-  boxHeight: number;
-  sudokuValues: Array<Array<number>>;
-  highlightedSquares: Array<Array<number>>;
-  selectedSquares: Array<Array<number>>;
-  sudokuColors: Array<Color>;
+  sudokuProperties: SudokuProperties;
   squareHandleHoverChange: (
     squareId: number,
     direction: HighlightDirection
   ) => void;
   squareHandleClick: (squareId: number, direction: HighlightDirection) => void;
-  sudokuStyle: object;
-  squaresTextStyle: object;
 }
 
 const Sudoku = ({
-  boxWidth,
-  boxHeight,
-  sudokuValues,
-  highlightedSquares,
-  selectedSquares,
-  sudokuColors,
+  sudokuProperties,
   squareHandleHoverChange,
   squareHandleClick,
-  sudokuStyle,
-  squaresTextStyle,
 }: Props) => {
   const boxWidthHeightPx = 42;
 
@@ -41,21 +27,29 @@ const Sudoku = ({
   }, []);*/
 
   const sudokuRows = [];
-  for (let i = 0; i < boxWidth * boxHeight; i++) {
+  for (
+    let i = 0;
+    i < sudokuProperties.sudokuBoxWidth * sudokuProperties.sudokuBoxHeight;
+    i++
+  ) {
     sudokuRows.push(
       <SudokuRow
         key={i}
         rowId={i}
-        rowValues={sudokuValues[i]}
-        highlightedSquaresInRow={highlightedSquares[i]}
-        selectedSquaresInRow={selectedSquares[i]}
-        boxWidth={boxWidth}
-        boxHeight={boxHeight}
+        rowValues={sudokuProperties.sudokuValues[i]}
+        highlightedSquaresInRow={sudokuProperties.highlightedSquares[i]}
+        selectedSquaresInRow={sudokuProperties.selectedSquares[i]}
+        boxWidth={sudokuProperties.sudokuBoxWidth}
+        boxHeight={sudokuProperties.sudokuBoxHeight}
         boxWidthHeightPx={boxWidthHeightPx}
-        sudokuColors={sudokuColors}
+        sudokuColors={
+          sudokuProperties.sudokuColorsEnabled
+            ? sudokuProperties.sudokuColors
+            : new Array(36).fill("#fff")
+        }
         squareHandleHoverChange={squareHandleHoverChange}
         squareHandleClick={squareHandleClick}
-        squaresTextStyle={squaresTextStyle}
+        squaresTextStyle={sudokuProperties.sudokuSquaresTextStyle}
       />
     );
   }
@@ -76,7 +70,10 @@ const Sudoku = ({
   const [sudokuScale, setSudokuScale] = useState(
     Math.max(
       minSudokuScale,
-      Math.min(maxSudokuScale, 9 / (boxWidth * boxHeight))
+      Math.min(
+        maxSudokuScale,
+        9 / (sudokuProperties.sudokuBoxWidth * sudokuProperties.sudokuBoxHeight)
+      )
     )
   );
 
@@ -133,12 +130,18 @@ const Sudoku = ({
     <div
       id="sudokuParent"
       style={{
-        width: boxWidthHeightPx * boxWidth * boxHeight,
-        height: boxWidthHeightPx * boxWidth * boxHeight,
+        width:
+          boxWidthHeightPx *
+          sudokuProperties.sudokuBoxWidth *
+          sudokuProperties.sudokuBoxHeight,
+        height:
+          boxWidthHeightPx *
+          sudokuProperties.sudokuBoxWidth *
+          sudokuProperties.sudokuBoxHeight,
         top: sudokuPosition[1] > 0 ? sudokuPosition[1] : "50%",
         left: sudokuPosition[0] > 0 ? sudokuPosition[0] : "50%",
         scale: sudokuScale.toString(),
-        ...sudokuStyle,
+        ...sudokuProperties.sudokuStyle,
       }}
       onMouseDown={handleMouseDown}
       onWheel={handleWheel}

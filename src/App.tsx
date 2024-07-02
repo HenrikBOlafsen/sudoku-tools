@@ -14,20 +14,12 @@ function App() {
     useState(false);
 
   const {
-    sudokuBoxWidth,
-    sudokuBoxHeight,
-    sudokuValues,
-    highlightedSquares,
-    selectedSquares,
+    sudokuProperties,
     selectedTool,
     highlightType,
     highlightDirectionLock,
-    sudokuColors,
-    sudokuColorsEnabled,
     recenterSudokuDirtyHack,
     animationSpeed,
-    sudokuStyle,
-    sudokuSquaresTextStyle,
     handleSudokuSquareHighlighting,
     handleSudokuCreation,
     onToolSelected,
@@ -43,8 +35,8 @@ function App() {
     <div id="pageWrapper">
       {sudokuCreationPanelVisible && (
         <SudokuCreationPanel
-          defaultBoxWidth={sudokuBoxWidth}
-          defaultBoxHeight={sudokuBoxHeight}
+          defaultBoxWidth={sudokuProperties.sudokuBoxWidth}
+          defaultBoxHeight={sudokuProperties.sudokuBoxHeight}
           onDismiss={() => setSudokuCreationPanelVisibility(false)}
           onCreateSudoku={(
             boxWidth: number,
@@ -63,33 +55,25 @@ function App() {
         />
       )}
 
-      {sudokuBoxWidth > 0 && sudokuBoxHeight > 0 && (
-        <Sudoku
-          key={recenterSudokuDirtyHack}
-          boxWidth={sudokuBoxWidth}
-          boxHeight={sudokuBoxHeight}
-          sudokuValues={sudokuValues}
-          highlightedSquares={highlightedSquares}
-          selectedSquares={selectedSquares}
-          sudokuColors={
-            sudokuColorsEnabled ? sudokuColors : new Array(36).fill("#fff")
-          }
-          squareHandleHoverChange={(squareId, direction) => {
-            handleSudokuSquareHighlighting(squareId, direction, false);
-          }}
-          squareHandleClick={(squareId, direction) => {
-            handleSudokuSquareHighlighting(squareId, direction, true);
-            if (highlightType == 1) {
-              setHighlightDirectionLock(direction);
-            } else if (highlightDirectionLock !== HighlightDirection.NONE) {
-              setHighlightDirectionLock(HighlightDirection.NONE);
-            }
-            setHighlightType((highlightType % 2) + 1);
-          }}
-          sudokuStyle={sudokuStyle}
-          squaresTextStyle={sudokuSquaresTextStyle}
-        />
-      )}
+      {sudokuProperties.sudokuBoxWidth > 0 &&
+        sudokuProperties.sudokuBoxHeight > 0 && (
+          <Sudoku
+            key={recenterSudokuDirtyHack}
+            sudokuProperties={sudokuProperties}
+            squareHandleHoverChange={(squareId, direction) => {
+              handleSudokuSquareHighlighting(squareId, direction, false);
+            }}
+            squareHandleClick={(squareId, direction) => {
+              handleSudokuSquareHighlighting(squareId, direction, true);
+              if (highlightType == 1) {
+                setHighlightDirectionLock(direction);
+              } else if (highlightDirectionLock !== HighlightDirection.NONE) {
+                setHighlightDirectionLock(HighlightDirection.NONE);
+              }
+              setHighlightType((highlightType % 2) + 1);
+            }}
+          />
+        )}
 
       <SettingsPanel
         animationSpeed={animationSpeed}
@@ -100,7 +84,7 @@ function App() {
           setSudokuColorPickerVisibility(!sudokuColorPickerVisible)
         }
         onSudokuColorsToggle={() => {
-          setSudokuColorsEnabled(!sudokuColorsEnabled);
+          setSudokuColorsEnabled(!sudokuProperties.sudokuColorsEnabled);
         }}
         onAnimationSpeedChanged={setAnimationSpeed}
       ></SettingsPanel>
@@ -125,9 +109,9 @@ function App() {
 
       {sudokuColorPickerVisible ? (
         <SudokuColorPicker
-          sudokuBoxWidth={sudokuBoxWidth}
-          sudokuBoxHeight={sudokuBoxHeight}
-          sudokuColors={sudokuColors}
+          sudokuBoxWidth={sudokuProperties.sudokuBoxWidth}
+          sudokuBoxHeight={sudokuProperties.sudokuBoxHeight}
+          sudokuColors={sudokuProperties.sudokuColors}
           setSudokuColors={(newSudokuColors) => {
             setSudokuColors(newSudokuColors);
           }}
