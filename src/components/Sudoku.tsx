@@ -130,6 +130,13 @@ const Sudoku = ({
     <div
       id="sudokuParent"
       style={{
+        position: "absolute",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "rgb(243, 243, 243)",
+        padding: 0,
+        margin: 0,
+        outline: "2px solid black",
+        boxShadow: "5px 10px 10px #888888",
         width:
           boxWidthHeightPx *
           sudokuProperties.sudokuBoxWidth *
@@ -146,7 +153,7 @@ const Sudoku = ({
       onMouseDown={handleMouseDown}
       onWheel={handleWheel}
     >
-      <div className="sudokuRow">{sudokuRows}</div>
+      {sudokuRows}
     </div>
   );
 };

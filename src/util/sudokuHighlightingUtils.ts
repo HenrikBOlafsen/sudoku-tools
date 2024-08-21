@@ -2,6 +2,8 @@
 // 1 means highlighted
 // 2 and up means selected. But 2 is in a different group than 3 and so on
 
+import { SelectableTools } from "./useSudoku";
+
 export const enum HighlightModes {
   SQUARE = "square",
   LINE = "line",
@@ -137,7 +139,8 @@ export function calculateNewSudokuHighlight(
   highlightType: number,
   highlightMode: HighlightModes,
   highlightDirectionLock: HighlightDirection,
-  direction: HighlightDirection
+  direction: HighlightDirection,
+  selectedSquareId1: number
 ) {
   let newSudokuHighlight: Array<Array<number>> = clearSudokuHighlight(
     sudokuBoxWidth * sudokuBoxHeight
@@ -159,12 +162,40 @@ export function calculateNewSudokuHighlight(
     }
   } else if (highlightMode == HighlightModes.LINE) {
     if (actualHighlightDirection === HighlightDirection.HORIZONTAL) {
+      // makes you only able to highlight rows in the same bow-row
+      if (
+        selectedSquareId1 != -1 &&
+        Math.floor(
+          Math.floor(squareId / (sudokuBoxWidth * sudokuBoxHeight)) /
+            sudokuBoxHeight
+        ) !=
+          Math.floor(
+            Math.floor(selectedSquareId1 / (sudokuBoxWidth * sudokuBoxHeight)) /
+              sudokuBoxHeight
+          )
+      ) {
+        return newSudokuHighlight;
+      }
       newSudokuHighlight = highlightSudokuRow(
         highlightedSquares,
         Math.floor(squareId / (sudokuBoxWidth * sudokuBoxHeight)),
         highlightType
       );
     } else if (actualHighlightDirection === HighlightDirection.VERTICAL) {
+      // makes you only able to highlight columns in the same bow-column
+      if (
+        selectedSquareId1 != -1 &&
+        Math.floor(
+          Math.floor(squareId % (sudokuBoxWidth * sudokuBoxHeight)) /
+            sudokuBoxWidth
+        ) !=
+          Math.floor(
+            Math.floor(selectedSquareId1 % (sudokuBoxWidth * sudokuBoxHeight)) /
+              sudokuBoxWidth
+          )
+      ) {
+        return newSudokuHighlight;
+      }
       newSudokuHighlight = highlightSudokuColumn(
         highlightedSquares,
         Math.floor(squareId % (sudokuBoxWidth * sudokuBoxHeight)),
