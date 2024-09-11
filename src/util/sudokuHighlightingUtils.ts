@@ -2,8 +2,6 @@
 // 1 means highlighted
 // 2 and up means selected. But 2 is in a different group than 3 and so on
 
-import { SelectableTools } from "./useSudoku";
-
 export const enum HighlightModes {
   SQUARE = "square",
   LINE = "line",
